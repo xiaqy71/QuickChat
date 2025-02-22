@@ -9,6 +9,7 @@ from generated.message_pb2_grpc import VerifyServiceServicer, add_VerifyServiceS
 class VerifyService(VerifyServiceServicer):
     def GetVerifyCode(self, request, context):
         email = request.email;
+        print(f"receive email is {email}")
         code = "123456"
         return GetVerifyRsp(error=0, email=request.email, code=code)
     

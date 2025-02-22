@@ -1,6 +1,7 @@
 #ifndef VERIFYGRPCCLIENT_H
 #define VERIFYGRPCCLIENT_H
 
+#include "RPConPool.h"
 #include "Singleton.h"
 #include "const.h"
 #include "message.grpc.pb.h"
@@ -23,7 +24,7 @@ public:
 
 private:
     VerifyGrpcClient();
-    std::unique_ptr<VerifyService::Stub> stub_;
+    std::unique_ptr<RPConPool<VerifyService>> pool_;
 };
 
 

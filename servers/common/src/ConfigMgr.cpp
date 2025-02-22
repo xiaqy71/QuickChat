@@ -51,3 +51,9 @@ SectionInfo ConfigMgr::operator[](const std::string& section)
 {
     return config_map_[section];
 }
+
+ConfigMgr& ConfigMgr::Inst()
+{
+    static ConfigMgr cfg_mgr;
+    return cfg_mgr;
+}

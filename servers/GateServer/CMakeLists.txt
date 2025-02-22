@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # GateServer 可执行文件
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS "src/*.cpp")
-add_executable(GateServer src/main.cpp ${SRCS})
+add_executable(GateServer ${SRCS})
 target_include_directories(GateServer PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>"

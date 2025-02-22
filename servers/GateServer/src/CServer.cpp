@@ -1,4 +1,5 @@
 #include "CServer.h"
+#include "AsioIOServicePool.h"
 #include "HttpConnection.h"
 #include <iostream>
 CServer::CServer(boost::asio::io_context& ioc, unsigned short& port)
@@ -9,14 +10,16 @@ CServer::CServer(boost::asio::io_context& ioc, unsigned short& port)
 
 void CServer::Start()
 {
-    auto self = shared_from_this();
-    acceptor_.async_accept(socket_, [self](beast::error_code ec) {
+    auto                            self       = shared_from_this();
+    auto&                           io_context = AsioIOServicePool::GetInstance()->GetIOService();
+    std::shared_ptr<HttpConnection> new_con    = std::make_shared<HttpConnection>(io_context);
+    acceptor_.async_accept(new_con->GetSocket(), [self, new_con](beast::error_code ec) {
         try {
             if (ec) {
                 self->Start();
                 return;
             }
-            std::make_shared<HttpConnection>(std::move(self->socket_))->Start();
+            new_con->Start();
             self->Start();
         }
         catch (std::exception& e) {

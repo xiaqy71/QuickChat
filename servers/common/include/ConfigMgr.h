@@ -14,12 +14,13 @@ struct SectionInfo
 class ConfigMgr
 {
 public:
-    ConfigMgr();
     ~ConfigMgr()                    = default;
     ConfigMgr(const ConfigMgr& src) = default;
-    ConfigMgr&  operator=(const ConfigMgr& rhs) = default;
-    SectionInfo operator[](const std::string& section);
+    ConfigMgr&        operator=(const ConfigMgr& rhs) = default;
+    SectionInfo       operator[](const std::string& section);
+    static ConfigMgr& Inst();
 
 private:
+    ConfigMgr();
     std::unordered_map<std::string, SectionInfo> config_map_;
 };

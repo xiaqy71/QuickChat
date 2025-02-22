@@ -64,8 +64,8 @@ std::string UrlDecode(const std::string& str)
     return strTemp;
 }
 
-HttpConnection::HttpConnection(tcp::socket socket)
-    : socket_(std::move(socket))
+HttpConnection::HttpConnection(boost::asio::io_context& ioc)
+    : socket_(ioc)
     , deadline_(socket_.get_executor(), std::chrono::seconds(60))
 {}
 
@@ -161,6 +161,10 @@ void HttpConnection::PreParseGetParam()
             get_params_[key] = value;
         }
     }
+}
+tcp::socket& HttpConnection::GetSocket()
+{
+    return socket_;
 }
 void HttpConnection::WriteResponse()
 {

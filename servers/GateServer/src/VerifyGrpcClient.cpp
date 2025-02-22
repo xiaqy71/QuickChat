@@ -1,4 +1,5 @@
 #include "VerifyGrpcClient.h"
+#include "ConfigMgr.h"
 
 GetVerifyRsp VerifyGrpcClient::GetVerifyCode(const std::string& email)
 {
@@ -6,10 +7,15 @@ GetVerifyRsp VerifyGrpcClient::GetVerifyCode(const std::string& email)
     GetVerifyRsp  reply;
     GetVerifyReq  request;
     request.set_email(email);
-    Status status = stub_->GetVerifyCode(&context, request, &reply);
+    auto   stub   = pool_->getConnection();
+    Status status = stub->GetVerifyCode(&context, request, &reply);
 
-    if (status.ok()) { return reply; }
+    if (status.ok()) {
+        pool_->returnConnection(std::move(stub));
+        return reply;
+    }
     else {
+        pool_->returnConnection(std::move(stub));
         reply.set_error(ErrorCodes::RPCFailed);
         return reply;
     }
@@ -17,7 +23,8 @@ GetVerifyRsp VerifyGrpcClient::GetVerifyCode(const std::string& email)
 
 VerifyGrpcClient::VerifyGrpcClient()
 {
-    std::shared_ptr<Channel> channel =
-        grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials());
-    stub_ = VerifyService::NewStub(channel);
+    auto&       gCfgMgr = ConfigMgr::Inst();
+    std::string host    = gCfgMgr["VerifyServer"]["Host"];
+    std::string port    = gCfgMgr["VerifyServer"]["Port"];
+    pool_.reset(new RPConPool<VerifyService>(5, host, port));
 }

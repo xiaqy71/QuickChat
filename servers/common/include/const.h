@@ -1,9 +1,6 @@
 #ifndef CONST_H
 #define CONST_H
 
-class ConfigMgr;
-extern ConfigMgr gCfgMgr;
-
 enum ErrorCodes
 {
     Success    = 0,

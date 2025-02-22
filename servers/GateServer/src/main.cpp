@@ -3,12 +3,10 @@
 #include <boost/asio.hpp>
 #include <iostream>
 
-ConfigMgr gCfgMgr;
-
 int main(int argc, char* argv[])
 {
     try {
-        std::string             gate_port_str = gCfgMgr["GateServer"]["Port"];
+        std::string             gate_port_str = ConfigMgr::Inst()["GateServer"]["Port"];
         unsigned short          gate_port     = atoi(gate_port_str.c_str());
         net::io_context         ioc{1};
         boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
