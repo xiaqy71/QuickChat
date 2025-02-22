@@ -52,7 +52,7 @@ async def serve() -> None:
     await server.start()
     async def server_graceful_shutdown():
         logging.info("Starting graceful shutdown...")
-        await server.stop(10)
+        await server.stop(5)
         await redis_cli.aclose()
     
     _cleanup_coroutines.append(server_graceful_shutdown())
