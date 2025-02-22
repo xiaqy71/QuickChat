@@ -1,4 +1,9 @@
 {
     "cmake.sourceDirectory": "/workspaces/QuickChat/server/GateServer",
-    
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    }
 }
