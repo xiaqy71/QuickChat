@@ -3,8 +3,9 @@ name = "verifyserver"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 dependencies = [
     "grpcio>=1.70.0",
     "grpcio-tools>=1.70.0",
+    "redis>=5.2.1",
 ]
