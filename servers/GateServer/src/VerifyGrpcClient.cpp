@@ -21,7 +21,7 @@ GetVerifyRsp VerifyGrpcClient::GetVerifyCode(const std::string& email) {
 
 VerifyGrpcClient::VerifyGrpcClient() {
   auto& gCfgMgr = ConfigMgr::Inst();
-  std::string host = gCfgMgr["VerifyServer"]["Host"];
-  std::string port = gCfgMgr["VerifyServer"]["Port"];
+  const std::string& host = gCfgMgr["VerifyServer"]["Host"];
+  const std::string& port = gCfgMgr["VerifyServer"]["Port"];
   pool_.reset(new RPConPool<VerifyService>(5, host, port));
 }

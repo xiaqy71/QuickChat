@@ -292,8 +292,8 @@ void RedisMgr::Close() {
 
 RedisMgr::RedisMgr() {
   auto& gCfgMgr = ConfigMgr::Inst();
-  auto& host = gCfgMgr["Redis"]["Host"];
-  auto port = gCfgMgr["Redis"]["Port"];
+  const auto& host = gCfgMgr["Redis"]["Host"];
+  const auto port = gCfgMgr["Redis"]["Port"];
   std::string pwd;
   try {
     pwd = gCfgMgr["Redis"]["Passwd"];
