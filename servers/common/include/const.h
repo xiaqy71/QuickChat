@@ -1,5 +1,6 @@
 #ifndef CONST_H
 #define CONST_H
+#include <functional>
 namespace ErrorCodes {
 enum {
   Success = 0,
@@ -15,6 +16,15 @@ enum {
   TokenInvalid = 1010,    //Token失效
   UidInvalid = 1011,      //uid无效
 };
+};
+
+class Defer {
+ public:
+  Defer(std::function<void()> func) : func_(func) {}
+  ~Defer() { func_(); }
+
+ private:
+  std::function<void()> func_;
 };
 
 #endif

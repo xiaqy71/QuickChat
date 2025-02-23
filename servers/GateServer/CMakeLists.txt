@@ -14,6 +14,7 @@ target_link_libraries(GateServer PRIVATE
     msg_grpc_proto  # 使用顶层定义的共享库
     common          # 共享代码
     hiredis
+    mysqlcppconn
 )
 
 # 处理 INI 文件

@@ -15,7 +15,7 @@ class ConfigMgr {
   ~ConfigMgr() = default;
   ConfigMgr(const ConfigMgr& src) = default;
   ConfigMgr& operator=(const ConfigMgr& rhs) = default;
-  SectionInfo operator[](const std::string& section);
+  SectionInfo& operator[](const std::string& section);
   static ConfigMgr& Inst();
 
  private:

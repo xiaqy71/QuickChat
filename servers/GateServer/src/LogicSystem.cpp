@@ -4,6 +4,7 @@
 #include <json/value.h>
 #include "ConfigMgr.h"
 #include "HttpConnection.h"
+#include "MysqlMgr.h"
 #include "RedisMgr.h"
 #include "VerifyGrpcClient.h"
 #include "const.h"
@@ -73,6 +74,20 @@ LogicSystem::LogicSystem() {
       beast::ostream(connection->response_.body()) << jsonstr;
       return true;
     }
+
+    auto email = src_root["email"].asString();
+    auto name = src_root["user"].asString();
+    auto pwd = src_root["passwd"].asString();
+    auto confirm = src_root["confirm"].asString();
+    // auto icon = src_root["icon"].asString();
+
+    if (pwd != confirm) {
+      std::cout << "password err " << std::endl;
+      root["error"] = ErrorCodes::PasswdErr;
+      std::string json_str = root.toStyledString();
+      beast::ostream(connection->response_.body()) << json_str;
+    }
+
     // 先查找redis中email对应的验证码是否合理
     std::string verify_code;
     bool b_get_verify = RedisMgr::GetInstance()->Get(
@@ -95,24 +110,22 @@ LogicSystem::LogicSystem() {
       return true;
     }
 
-    // 查找redis判断用户是否已存在
-    bool b_user_exist =
-        RedisMgr::GetInstance()->ExistsKey(src_root["user"].asString());
-    if (b_user_exist) {
-      std::cout << "user exist " << std::endl;
+    // 查找数据库判断用户是否存在
+    int uid = MysqlMgr::GetInstance()->RegUser(name, email, pwd);
+    if (uid == 0 || uid == -1) {
+      std::cout << "user or email exist" << std::endl;
       root["error"] = ErrorCodes::UserExist;
       std::string json_str = root.toStyledString();
       beast::ostream(connection->response_.body()) << json_str;
       return true;
     }
 
-    // TODO： 查找mysql判断用户是否存在
-
     root["error"] = 0;
-    root["email"] = src_root["email"];
-    root["user"] = src_root["user"].asString();
-    root["passwd"] = src_root["passwd"].asString();
-    root["confirm"] = src_root["confirm"].asString();
+    root["uid"] = uid;
+    root["email"] = email;
+    root["user"] = name;
+    root["passwd"] = pwd;
+    root["confirm"] = confirm;
     root["verifycode"] = src_root["verifycode"].asString();
     std::string json_str = root.toStyledString();
     beast::ostream(connection->response_.body()) << json_str;
