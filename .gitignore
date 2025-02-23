@@ -11,5 +11,3 @@ CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
 build/
-boost_1_81_0/
-grpc/

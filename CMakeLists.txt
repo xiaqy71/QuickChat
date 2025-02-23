@@ -12,6 +12,7 @@ find_package(jsoncpp REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
 find_package(Threads REQUIRED)
+find_package(hiredis REQUIRED)
 
 # 查找 Boost
 find_package(Boost REQUIRED COMPONENTS filesystem)  # 指定需要的组件

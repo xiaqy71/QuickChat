@@ -5,5 +5,7 @@
         "plaintext": false,
         "markdown": false,
         "scminput": false
-    }
+    },
+    "editor.indentSize": "tabSize",
+    "editor.tabSize": 2
 }

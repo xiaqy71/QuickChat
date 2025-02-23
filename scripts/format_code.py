@@ -19,7 +19,7 @@ def format_files(directory):
     # 使用 clang-format 格式化文件
     for file in files_to_format:
         print(f"Formatting {file}...")
-        subprocess.run(['clang-format', '-i', file], check=True)
+        subprocess.run(['clang-format-12', '-i', file], check=True)
 
 if __name__ == "__main__":
     # 从项目根目录开始，格式化 servers/ 下的代码
