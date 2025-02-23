@@ -152,3 +152,63 @@ int MysqlDao::RegUser(const std::string& name, const std::string& email,
     return -1;
   }
 }
+
+bool MysqlDao::CheckEmail(const std::string& name, const std::string& email) {
+  auto con = pool_->getConnection();
+  try {
+    if (con == nullptr) {
+      pool_->returnConnection(std::move(con));
+      return false;
+    }
+
+    std::unique_ptr<sql::PreparedStatement> pstmt(
+        con->con_->prepareStatement("SELECT email FROM user WHERE name = ?"));
+    pstmt->setString(1, name);
+    std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+
+    while (res->next()) {
+      std::cout << "Check Email: " << res->getString("email") << std::endl;
+      if (email != res->getString("email")) {
+        pool_->returnConnection(std::move(con));
+        return false;
+      }
+      pool_->returnConnection(std::move(con));
+      return true;
+    }
+  } catch (sql::SQLException& e) {
+    pool_->returnConnection(std::move(con));
+    std::cout << "SQLException: " << e.what();
+    std::cout << " (MySQL error code: " << e.getErrorCode();
+    std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool MysqlDao::UpdatePwd(const std::string& name, const std::string& newpwd) {
+  auto con = pool_->getConnection();
+  try {
+    if (con == nullptr) {
+      pool_->returnConnection(std::move(con));
+      return false;
+    }
+
+    std::unique_ptr<sql::PreparedStatement> pstmt(
+        con->con_->prepareStatement("UPDATE user SET pwd = ? WHERE name = ?"));
+
+    pstmt->setString(2, name);
+    pstmt->setString(1, newpwd);
+
+    int updateCount = pstmt->executeUpdate();
+
+    std::cout << "Update rows: " << updateCount << std::endl;
+    pool_->returnConnection(std::move(con));
+    return true;
+  } catch (sql::SQLException& e) {
+    pool_->returnConnection(std::move(con));
+    std::cout << "SQLException: " << e.what();
+    std::cout << " (MySQL error code: " << e.getErrorCode();
+    std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    return false;
+  }
+}
