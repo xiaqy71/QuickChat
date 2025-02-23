@@ -318,7 +318,7 @@ RedisConPool::RedisConPool(size_t poolSize, const char* host, int port,
       if (context != nullptr) {
         redisFree(context);
       }
-      std::cout << "connect failed" << std::endl;
+      std::cout << "redis connect failed" << std::endl;
       continue;
     }
     if (pwd_ != nullptr) {

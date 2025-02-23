@@ -11,6 +11,7 @@ import configparser
 # 异步 Redis 客户端
 redis_cli = None
 _cleanup_coroutines = []
+VERIFY_PREFIX = None  # 验证码前缀
 
 class VerifyService(VerifyServiceServicer):
     async def GetVerifyCode(self, request: GetVerifyReq, context: grpc.aio.ServicerContext)->GetVerifyRsp:
@@ -18,7 +19,7 @@ class VerifyService(VerifyServiceServicer):
         logging.info(f"Received request for email: {email}")
         code = "".join(random.choices(string.digits, k=6))
         try:
-            await redis_cli.setex(f"verify:{email}", 300, code)
+            await redis_cli.setex(f"{VERIFY_PREFIX}{email}", 300, code)
             print(f"Stored code {code} for {email} in Redis")
             return GetVerifyRsp(error=0, email=request.email, code=code)
         except Exception as e:
@@ -29,14 +30,16 @@ class VerifyService(VerifyServiceServicer):
             
     
 async def serve() -> None:
-    global redis_cli
+    global redis_cli, VERIFY_PREFIX
     
     config = configparser.ConfigParser()
     config.read('common.ini')
     port = config['VerifyServer']['Port']
     redis_host = config.get("Redis", "Host", fallback="localhost")
     redis_port = config.get("Redis", "Port", fallback=6379)
-    redis_cli = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)
+    VERIFY_PREFIX = config.get("redis", "verify_prefix", fallback="verify:")  # 从配置文件读取
+    
+    redis_cli = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)    
     try:
         await redis_cli.ping()
         logging.info("Redis connected successfully.")
