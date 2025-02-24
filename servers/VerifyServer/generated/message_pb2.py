@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rmessage.proto\x12\x07message\"\x1d\n\x0cGetVerifyReq\x12\r\n\x05\x65mail\x18\x01 \x01(\t\":\n\x0cGetVerifyRsp\x12\r\n\x05\x65rror\x18\x01 \x01(\x05\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\"\x1f\n\x10GetChatServerReq\x12\x0b\n\x03uid\x18\x01 \x01(\x05\"L\n\x10GetChatServerRsp\x12\r\n\x05\x65rror\x18\x01 \x01(\x05\x12\x0c\n\x04host\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\t\x12\r\n\x05token\x18\x04 \x01(\t2P\n\rVerifyService\x12?\n\rGetVerifyCode\x12\x15.message.GetVerifyReq\x1a\x15.message.GetVerifyRsp\"\x00\x32X\n\rStatusService\x12G\n\rGetChatServer\x12\x19.message.GetChatServerReq\x1a\x19.message.GetChatServerRsp\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rmessage.proto\x12\x07message\"\x1d\n\x0cGetVerifyReq\x12\r\n\x05\x65mail\x18\x01 \x01(\t\":\n\x0cGetVerifyRsp\x12\r\n\x05\x65rror\x18\x01 \x01(\x05\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\"\x1f\n\x10GetChatServerReq\x12\x0b\n\x03uid\x18\x01 \x01(\x05\"L\n\x10GetChatServerRsp\x12\r\n\x05\x65rror\x18\x01 \x01(\x05\x12\x0c\n\x04host\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\t\x12\r\n\x05token\x18\x04 \x01(\t\"&\n\x08LoginReq\x12\x0b\n\x03uid\x18\x01 \x01(\x05\x12\r\n\x05token\x18\x02 \x01(\t\"5\n\x08LoginRsp\x12\r\n\x05\x65rror\x18\x01 \x01(\x05\x12\x0b\n\x03uid\x18\x02 \x01(\x05\x12\r\n\x05token\x18\x03 \x01(\t2P\n\rVerifyService\x12?\n\rGetVerifyCode\x12\x15.message.GetVerifyReq\x1a\x15.message.GetVerifyRsp\"\x00\x32\x87\x01\n\rStatusService\x12G\n\rGetChatServer\x12\x19.message.GetChatServerReq\x1a\x19.message.GetChatServerRsp\"\x00\x12-\n\x05Login\x12\x11.message.LoginReq\x1a\x11.message.LoginRspb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,8 +39,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_GETCHATSERVERREQ']._serialized_end=148
   _globals['_GETCHATSERVERRSP']._serialized_start=150
   _globals['_GETCHATSERVERRSP']._serialized_end=226
-  _globals['_VERIFYSERVICE']._serialized_start=228
-  _globals['_VERIFYSERVICE']._serialized_end=308
-  _globals['_STATUSSERVICE']._serialized_start=310
-  _globals['_STATUSSERVICE']._serialized_end=398
+  _globals['_LOGINREQ']._serialized_start=228
+  _globals['_LOGINREQ']._serialized_end=266
+  _globals['_LOGINRSP']._serialized_start=268
+  _globals['_LOGINRSP']._serialized_end=321
+  _globals['_VERIFYSERVICE']._serialized_start=323
+  _globals['_VERIFYSERVICE']._serialized_end=403
+  _globals['_STATUSSERVICE']._serialized_start=406
+  _globals['_STATUSSERVICE']._serialized_end=541
 # @@protoc_insertion_point(module_scope)

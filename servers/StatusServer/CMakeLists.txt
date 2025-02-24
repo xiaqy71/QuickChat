@@ -11,9 +11,6 @@ target_include_directories(StatusServer PRIVATE
 target_link_libraries(StatusServer PRIVATE
     msg_grpc_proto  # 使用顶层定义的共享库
     common          # 共享代码
-    jsoncpp
-    hiredis
-    
 )
 
 # 处理 INI 文件

@@ -1,16 +1,14 @@
-# servers/GateServer/CMakeLists.txt
+# servers/ChatServer/CMakeLists.txt
 cmake_minimum_required(VERSION 3.16)
 
-# GateServer 可执行文件
+# ChatServer 可执行文件
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS "src/*.cpp")
-add_executable(GateServer ${SRCS})
-target_include_directories(GateServer PRIVATE
+add_executable(ChatServer ${SRCS})
+target_include_directories(ChatServer PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>"
 )
-target_link_libraries(GateServer PRIVATE
-    jsoncpp
-    Threads::Threads
+target_link_libraries(ChatServer PRIVATE
     msg_grpc_proto  # 使用顶层定义的共享库
     common          # 共享代码
 )

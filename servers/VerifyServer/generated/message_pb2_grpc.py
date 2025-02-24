@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import generated.message_pb2 as message__pb2
+import message_pb2 as message__pb2
 
 GRPC_GENERATED_VERSION = '1.70.0'
 GRPC_VERSION = grpc.__version__
@@ -111,12 +111,23 @@ class StatusServiceStub(object):
                 request_serializer=message__pb2.GetChatServerReq.SerializeToString,
                 response_deserializer=message__pb2.GetChatServerRsp.FromString,
                 _registered_method=True)
+        self.Login = channel.unary_unary(
+                '/message.StatusService/Login',
+                request_serializer=message__pb2.LoginReq.SerializeToString,
+                response_deserializer=message__pb2.LoginRsp.FromString,
+                _registered_method=True)
 
 
 class StatusServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetChatServer(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Login(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -129,6 +140,11 @@ def add_StatusServiceServicer_to_server(servicer, server):
                     servicer.GetChatServer,
                     request_deserializer=message__pb2.GetChatServerReq.FromString,
                     response_serializer=message__pb2.GetChatServerRsp.SerializeToString,
+            ),
+            'Login': grpc.unary_unary_rpc_method_handler(
+                    servicer.Login,
+                    request_deserializer=message__pb2.LoginReq.FromString,
+                    response_serializer=message__pb2.LoginRsp.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -158,6 +174,33 @@ class StatusService(object):
             '/message.StatusService/GetChatServer',
             message__pb2.GetChatServerReq.SerializeToString,
             message__pb2.GetChatServerRsp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Login(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/message.StatusService/Login',
+            message__pb2.LoginReq.SerializeToString,
+            message__pb2.LoginRsp.FromString,
             options,
             channel_credentials,
             insecure,

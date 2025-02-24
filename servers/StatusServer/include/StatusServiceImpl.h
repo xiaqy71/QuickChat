@@ -9,11 +9,20 @@ using grpc::ServerContext;
 using grpc::Status;
 using message::GetChatServerReq;
 using message::GetChatServerRsp;
+using message::LoginReq;
+using message::LoginRsp;
 using message::StatusService;
 
-struct ChatServer {
+class ChatServer {
+ public:
+  ChatServer();
+  ChatServer(const ChatServer&) = default;
+  ChatServer& operator=(const ChatServer&) = default;
+
   std::string host;
   std::string port;
+  std::string name;
+  int con_count;
 };
 
 class StatusServiceImpl final : public StatusService::Service {
@@ -21,8 +30,14 @@ class StatusServiceImpl final : public StatusService::Service {
   StatusServiceImpl();
   Status GetChatServer(ServerContext* context, const GetChatServerReq* request,
                        GetChatServerRsp* reply) override;
-  std::vector<ChatServer> servers_;
-  int server_index_;
+  Status Login(ServerContext* context, const LoginReq* request,
+               LoginRsp* reply) override;
+
+ private:
+  void insertToken(int uid, std::string token);
+  ChatServer& getChatServer();
+  std::unordered_map<std::string, ChatServer> servers_;
+  std::mutex server_mtx_;
 };
 
 #endif

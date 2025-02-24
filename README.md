@@ -1,6 +1,6 @@
 # QuickChat
 
-## 依赖性
+## 依赖
 - gRPC
 - boost
 - jsoncpp
